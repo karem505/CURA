@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CURA Pharmaceutical Solutions | Company Profile</title>
+    
+    <!-- Scripts for Libraries -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Google Fonts (Poppins & Dancing Script) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #ee9b00;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #495057;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 8px 25px rgba(0, 95, 115, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            direction: ltr;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, rgba(0, 95, 115, 0.9), rgba(10, 147, 150, 0.85)), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .header h1 { font-size: 3.5rem; margin-bottom: 10px; color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+        .header .slogan { font-size: 1.8rem; font-weight: 500; color: var(--accent-color); margin-top: 15px; }
+        
+        /* Section Styling */
+        .section { border-bottom: 1px solid #e0e0e0; }
+        .section:last-child { border-bottom: none; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; position: relative; }
+        .section-title::after { content: ''; width: 80px; height: 4px; background-color: var(--accent-color); position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); border-radius: 2px; }
+
+        /* About Us Box */
+        .about-box { background: var(--card-bg); padding: 40px; border-radius: var(--border-radius); box-shadow: var(--shadow); max-width: 800px; margin: 0 auto; border-left: 7px solid var(--primary-color); }
+        .about-box .about-section { margin-bottom: 25px; }
+        .about-box .about-section:last-child { margin-bottom: 0; }
+        .about-box h4 { color: var(--secondary-color); font-size: 1.5rem; margin-bottom: 10px; display: flex; align-items: center; }
+        .about-box .icon { margin-right: 15px; font-size: 2rem; color: var(--accent-color); }
+
+        /* Core Values Marquee Animation */
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .values-marquee-container { background: var(--primary-color); border-radius: var(--border-radius); box-shadow: var(--shadow); padding: 30px 0; overflow: hidden; white-space: nowrap; position: relative; }
+        .values-marquee-container:before, .values-marquee-container:after { position: absolute; top: 0; width: 100px; height: 100%; content: ""; z-index: 2; }
+        .values-marquee-container:before { left: 0; background: linear-gradient(to left, rgba(0, 95, 115, 0), var(--primary-color)); }
+        .values-marquee-container:after { right: 0; background: linear-gradient(to right, rgba(0, 95, 115, 0), var(--primary-color)); }
+        .values-track { display: inline-block; animation: scroll 30s linear infinite; }
+        .value-item { display: inline-block; color: white; font-size: 1.8rem; font-weight: 600; padding: 0 40px; margin: 0; }
+        .value-item .icon { color: var(--accent-color); margin-right: 15px; }
+
+        /* Advantages Mind Map */
+        #advantages-mindmap-container { width: 100%; height: 600px; background: var(--card-bg); border-radius: var(--border-radius); box-shadow: var(--shadow); position: relative; }
+        
+        /* Services Section */
+        .service-card { background: var(--card-bg); margin-bottom: 20px; border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; }
+        .service-header { background-color: var(--primary-color); color: white; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.3rem; font-weight: 600; }
+        .service-header.open .toggle-icon { transform: rotate(180deg); }
+        .service-header .toggle-icon { font-size: 1.5rem; transition: transform 0.3s ease; }
+        .service-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.5s ease; padding: 0 25px; }
+        .service-content.open { max-height: 1000px; padding: 25px; }
+        .service-content ul { list-style-type: '✓ '; padding-left: 20px; }
+        .service-content li { margin-bottom: 15px; }
+        .service-content strong { color: var(--secondary-color); }
+
+        /* Footer */
+        .footer { background-color: var(--dark-color); color: var(--light-color); text-align: center; padding: 40px 20px; }
+        .footer p { margin: 0 0 20px 0; font-size: 1.1rem; }
+        .footer .contact-link { display: inline-block; background-color: var(--accent-color); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: background-color 0.3s ease, transform 0.3s ease; }
+        .footer .contact-link:hover { background-color: #ffb703; transform: translateY(-3px); }
+        .footer .phone-contact { margin-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 25px; }
+        .footer .whatsapp-cta { font-size: 1.2rem; color: #e9ecef; margin-bottom: 10px; }
+        .footer .whatsapp-link {
+            font-family: 'Dancing Script', cursive;
+            color: #25D366; /* WhatsApp Green */
+            text-decoration: none;
+            font-size: 2.5rem; /* Base font size */
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: color 0.3s ease;
+        }
+        .footer .whatsapp-link:hover { color: #128C7E; }
+        .footer .phone-display {
+            display: inline-flex;
+            align-items: baseline; /* Key for alignment */
+        }
+        .footer .large-digits {
+            font-size: 1.5em; /* 1.5 times the base font size (2.5rem) */
+            margin: 0 2px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .header .slogan { font-size: 1.4rem; }
+            .section-title { font-size: 2rem; }
+            .footer .whatsapp-link { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- DATA (ALL IN ENGLISH) ---
+        const companyProfile = {
+            name_en: "CURA Pharmaceutical Solutions",
+            slogan: "Helping you achieve more with AI",
+            founded: 2023,
+            location: "Maadi, Cairo",
+            vision: "To be a leading company in technology for pharmacies.",
+            mission: "To increase our clients' productivity and profitability while saving them valuable time.",
+            phone: "01080788886",
+            whatsapp_number: "201080788886", // International format for WhatsApp
+            core_values: ["Innovation", "Trust", "Quality", "Commitment", "Continuous Development"],
+            advantages: [ "Experienced Pharmaceutical Team", "Tailor-Made Solutions", "Competitive Pricing", "Continuous Technical Support", "Practical Training Programs" ],
+            services: [
+                {
+                    title: "Consulting for Pharmacy Company Structuring",
+                    details: `<ul><li><strong>Hierarchy & Change Management:</strong><br/>Understanding organizational structure and navigating transformations effectively.</li><li><strong>Contract Appraisal & JD/JA:</strong><br/>Creating precise job descriptions and performing job analyses.</li><li><strong>Staff KPIs & Performance Evaluation:</strong><br/>Defining key metrics and evaluating employee performance objectively.</li><li><strong>Learning & Development Plans:</strong><br/>Designing personalized and impactful training pathways.</li></ul>`
+                },
+                {
+                    title: "Smart Solutions Management (AI BOT)",
+                    details: `<p>We design and develop custom bots for customer service on various platforms (Telegram, Facebook, WhatsApp). The bot helps you respond to customer inquiries, provide product information, present offers and discounts, and much more.</p>`
+                },
+                {
+                    title: "Individual and Team Training",
+                    details: `<ul><li><strong>Data Analysis Course:</strong> Learn to analyze strengths and weaknesses to make informed decisions and create effective short and long-term plans.</li><li><strong>Design Thinking Course:</strong> Learn how to think creatively and structure plans for yourself, your work, and even your studies, much like building a mind map.</li><li><strong>R&D Course:</strong> Master the skill of easily finding information and extracting detailed insights.</li><li><strong>Appraisal Team Service & Course:</strong> Know how to establish critical metrics to measure employee productivity, conduct TNA (Training Needs Analysis), and develop your team.</li><li><strong>Organization Development Service & Course:</strong> A comprehensive service covering organizational structure, change management, contract evaluation, job descriptions, performance indicators, and development plans.</li></ul>`
+                }
+            ],
+            contact_link: "https://www.facebook.com/profile.php?id=61576955925752"
+        };
+
+        // --- D3.js COMPONENT WITH TEXT WRAPPING ---
+        const D3NetworkGraph = ({ nodes, links }) => {
+            const d3Container = React.useRef(null);
+
+            function wrapText(text, width) { /* ... Text wrapping helper ... */
+                text.each(function () {
+                    const text = d3.select(this), words = text.text().split(/\s+/).reverse();
+                    let word, line = [], lineNumber = 0, lineHeight = 1.1, y = text.attr("y"), dy = 0;
+                    let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+                    while (word = words.pop()) {
+                        line.push(word);
+                        tspan.text(line.join(" "));
+                        if (tspan.node().getComputedTextLength() > width) {
+                            line.pop();
+                            tspan.text(line.join(" "));
+                            line = [word];
+                            tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                        }
+                    }
+                });
+            }
+
+            React.useEffect(() => {
+                if (!nodes || !links || !d3Container.current) return;
+                const container = d3Container.current;
+                const width = container.clientWidth, height = container.clientHeight;
+                if (!width || !height) return;
+                d3.select(container).selectAll("*").remove();
+                
+                const svg = d3.select(container).append("svg").attr("width", width).attr("height", height).attr("viewBox", [-width / 2, -height / 2, width, height]);
+                const simulation = d3.forceSimulation(nodes)
+                    .force("link", d3.forceLink(links).id(d => d.id).distance(150).strength(0.5))
+                    .force("charge", d3.forceManyBody().strength(-800))
+                    .force("collide", d3.forceCollide().radius(d => (d.bbox ? Math.max(d.bbox.width, d.bbox.height) / 2 : d.size) + 20).strength(1))
+                    .force("center", d3.forceCenter(0, 0));
+                
+                const link = svg.append("g").attr("stroke", "#bbb").attr("stroke-opacity", 0.7).selectAll("line").data(links).join("line").attr("stroke-width", 2);
+                const node = svg.append("g").selectAll("g").data(nodes).join("g").call(drag(simulation));
+                
+                node.each(function(d) { if (d.id === 'CURA') { d3.select(this).append("circle").attr("r", d.size).attr("fill", d.color); } });
+                
+                const text = node.append("text").text(d => d.id).attr("font-family", "Poppins, sans-serif").attr("fill", d => d.id === 'CURA' ? 'white' : '#333').attr("font-size", d => d.id === 'CURA' ? '22px' : '14px').attr("font-weight", "600").attr("text-anchor", "middle").attr("dy", d => d.id !== 'CURA' ? "0.35em" : null).style("pointer-events", "none");
+                text.filter(d => d.id !== 'CURA').call(wrapText, 100);
+                
+                node.filter(d => d.id !== 'CURA').each(function(d) {
+                    const textNode = d3.select(this).select("text"), bbox = textNode.node().getBBox();
+                    d.bbox = bbox;
+                    const padding = 15;
+                    d3.select(this).insert("rect", "text").attr("x", bbox.x - padding).attr("y", bbox.y - padding).attr("width", bbox.width + padding * 2).attr("height", bbox.height + padding * 2).attr("rx", 10).attr("fill", d.color);
+                });
+                
+                simulation.on("tick", () => {
+                    link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                });
+                
+                function drag(simulation) { /* ... Drag functions ... */
+                  function dragstarted(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+                  function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+                  function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+                  return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+                }
+            }, [nodes, links]);
+
+            return <div id="advantages-mindmap-container" ref={d3Container}></div>;
+        };
+        
+        // --- UI COMPONENTS ---
+        const Header = ({ name_en, slogan }) => <header className="header"><h1>{name_en}</h1><p className="slogan">{slogan}</p></header>;
+        
+        const About = ({ vision, mission, founded, location }) => (
+            <section className="section"><div className="container"><h2 className="section-title">About Us</h2><div className="about-box">
+                <div className="about-section"><h4><span className="icon">💡</span>Our Vision</h4><p>{vision}</p></div>
+                <div className="about-section"><h4><span className="icon">⚙️</span>Our Mission</h4><p>{mission}</p></div>
+                <div className="about-section"><h4><span className="icon">📍</span>Foundation & Location</h4><p>Founded in {founded}, based in {location}.</p></div>
+            </div></div></section>
+        );
+
+        const CoreValues = ({ values }) => (
+             <section className="section"><div className="container"><h2 className="section-title">Our Core Values</h2><div className="values-marquee-container"><div className="values-track">
+                {[...values, ...values].map((value, index) => <p className="value-item" key={index}><span className="icon">✦</span>{value}</p>)}
+            </div></div></div></section>
+        );
+
+        const Advantages = ({ advantages }) => {
+            const mindMapData = React.useMemo(() => {
+                const nodes = [ { id: 'CURA', size: 60, color: 'var(--accent-color)' }, ...advantages.map(adv => ({ id: adv, color: 'var(--primary-color)' })) ];
+                const links = advantages.map(adv => ({ source: 'CURA', target: adv }));
+                return { nodes, links };
+            }, [advantages]);
+            return <section className="section"><div className="container"><h2 className="section-title">Our Competitive Advantages</h2><D3NetworkGraph nodes={mindMapData.nodes} links={mindMapData.links} /></div></section>;
+        }
+
+        const ServiceAccordion = ({ title, details }) => {
+            const [isOpen, setIsOpen] = React.useState(false);
+            return <div className="service-card"><div className={`service-header ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)}>{title}<span className="toggle-icon">▼</span></div><div className={`service-content ${isOpen ? 'open' : ''}`} dangerouslySetInnerHTML={{ __html: details }} /></div>;
+        };
+
+        const Services = ({ services }) => (
+            <section className="section"><div className="container"><h2 className="section-title">Our Services</h2>
+                {services.map((service, index) => <ServiceAccordion key={index} title={service.title} details={service.details} />)}
+            </div></section>
+        );
+        
+        const Footer = ({ contact_link, whatsapp_number }) => {
+            // Split the number for styling
+            const phonePrefix = "010 807";
+            const phoneEmphasized = "8888";
+            const phoneSuffix = "6";
+
+            return (
+                <footer className="footer"><div className="container">
+                    <p>Ready to achieve more? Get in touch with us!</p>
+                    <a href={contact_link} target="_blank" rel="noopener noreferrer" className="contact-link">Visit our Facebook Page</a>
+                    <div className="phone-contact">
+                        <p className="whatsapp-cta">Try our AI Assistant on WhatsApp!</p>
+                        <a href={`https://wa.me/${whatsapp_number}`} className="whatsapp-link" target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943s-.182-.15-.38-.25z"/></svg>
+                            <div className="phone-display">
+                                <span>{phonePrefix}</span>
+                                <span className="large-digits">{phoneEmphasized}</span>
+                                <span>{phoneSuffix}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div></footer>
+            );
+        }
+
+        // --- MAIN APP COMPONENT ---
+        const App = () => (
+            <div>
+                <Header name_en={companyProfile.name_en} slogan={companyProfile.slogan} />
+                <main>
+                    <About vision={companyProfile.vision} mission={companyProfile.mission} founded={companyProfile.founded} location={companyProfile.location} />
+                    <CoreValues values={companyProfile.core_values} />
+                    <Advantages advantages={companyProfile.advantages} />
+                    <Services services={companyProfile.services} />
+                </main>
+                <Footer contact_link={companyProfile.contact_link} whatsapp_number={companyProfile.whatsapp_number} />
+            </div>
+        );
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
