@@ -8,473 +8,12 @@
     <!-- Both fonts are included -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-blue: #007bff;
-            --secondary-blue: #0056b3;
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
-            --text-color: #212529;
-            --white: #ffffff;
-            --whatsapp-green: #25D366;
-            --border-radius: 15px;
-            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* --- LANGUAGE SPECIFIC STYLING --- */
-        
-        /* Default Font (English) */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--white);
-            color: var(--text-color);
-            overflow-x: hidden;
-            font-size: 16px;
-        }
-        
-        /* Arabic Font & RTL Overrides */
-        html[dir="rtl"] body {
-            font-family: 'Almarai', sans-serif;
-        }
-        
-        /* Language span visibility logic */
-        .lang-ar { display: none; }
-        html[lang="ar"] .lang-ar, html[lang="ar"] .lang-ar-block { display: inline; }
-        html[lang="ar"] .lang-en, html[lang="ar"] .lang-en-block { display: none; }
-
-        html[lang="en"] .lang-en, html[lang="en"] .lang-en-block { display: inline; }
-        html[lang="en"] .lang-ar, html[lang="en"] .lang-ar-block { display: none; }
-        
-        /* To handle elements that should be block-level */
-        html[lang="ar"] .lang-ar-block { display: block; }
-        html[lang="en"] .lang-en-block { display: block; }
-
-        /* --- END LANGUAGE SPECIFIC STYLING --- */
-
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* Header */
-        .main-header {
-            background-color: var(--white);
-            padding: 15px 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: top 0.3s;
-        }
-
-        .main-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-        }
-        
-        /* RTL override for header logo and nav order */
-        html[dir="rtl"] .logo { order: 2; }
-        html[dir="rtl"] .nav-links { order: 1; }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: var(--dark-gray);
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-        
-        /* Language Toggle Button Style */
-        #lang-toggle-btn {
-            background-color: var(--light-gray);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 700;
-            border: 1px solid #dee2e6;
-        }
-        #lang-toggle-btn:hover {
-            background-color: #e2e6ea;
-            color: var(--primary-blue);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-blue);
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(to left, #eef5ff, #f8f9fa);
-            padding: 160px 0 80px 0;
-            text-align: center;
-        }
-        html[dir="rtl"] .hero-section {
-            background: linear-gradient(to right, #eef5ff, #f8f9fa);
-        }
-
-        .hero-content h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--dark-gray);
-            line-height: 1.4;
-        }
-
-        .hero-content h1 .highlight {
-            color: var(--primary-blue);
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 20px auto 30px auto;
-            color: #6c757d;
-        }
-
-        .cta-button {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: background-color 0.3s, transform 0.3s;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            background-color: var(--secondary-blue);
-            transform: translateY(-3px);
-        }
-
-        /* Stats Section */
-        .stats-section {
-            padding: 60px 0;
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            padding: 40px 20px;
-            box-shadow: var(--box-shadow);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-item .counter {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-        }
-
-        .stat-item p {
-            font-size: 1rem;
-            color: #6c757d;
-            font-weight: 700;
-        }
-
-        /* Generic Section Styling */
-        .section {
-            padding: 80px 0;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark-gray);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-        
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary-blue);
-            border-radius: 2px;
-        }
-
-        /* Services Accordion */
-        .accordion {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .accordion-item {
-            background-color: #f8f9fa;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        .accordion-header {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            cursor: pointer;
-            background-color: var(--white);
-            border: none;
-            text-align: left;
-            font-size: 1.3rem;
-            font-weight: 700;
-            transition: background-color 0.3s;
-        }
-        html[dir="rtl"] .accordion-header {
-            text-align: right;
-        }
-
-        .accordion-header:hover {
-            background-color: #eef5ff;
-        }
-        .accordion-header .icon {
-            font-size: 1.8rem;
-            color: var(--primary-blue);
-            margin-right: 15px;
-        }
-        html[dir="rtl"] .accordion-header .icon {
-            margin-right: 0;
-            margin-left: 15px;
-        }
-
-        .accordion-header .toggle-icon {
-            margin-left: auto;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        html[dir="rtl"] .accordion-header .toggle-icon {
-            margin-left: 0;
-            margin-right: auto;
-        }
-
-        .accordion-header.active .toggle-icon {
-            transform: rotate(45deg);
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            text-align: center;
-        }
-        .accordion-content .content-wrapper {
-            padding: 0 20px 20px 20px;
-        }
-        .accordion-content p {
-            color: #6c757d;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-        .order-button {
-            display: inline-block;
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            margin-top: 20px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .order-button:hover {
-            background-color: var(--secondary-blue);
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        .main-footer {
-            background-color: var(--dark-gray);
-            color: var(--light-gray);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .main-footer .logo {
-            color: var(--white);
-            margin-bottom: 20px;
-        }
-
-        .main-footer p {
-            color: #ced4da;
-            margin-bottom: 20px;
-        }
-        
-        .main-footer a {
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .main-footer a:hover {
-            color: var(--primary-blue);
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .whatsapp-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--whatsapp-green) !important;
-        }
-        .whatsapp-link:hover {
-            color: var(--white) !important;
-        }
-        .whatsapp-icon {
-            width: 30px;
-            height: 30px;
-            fill: currentColor;
-        }
-        
-        .footer-links a {
-            margin: 0 10px;
-            font-weight: 700;
-        }
-
-        /* --- RESPONSIVE STYLES --- */
-
-        /* Tablet Styles */
-        @media (max-width: 992px) {
-            .container {
-                max-width: 960px;
-            }
-
-            .main-header .container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .stats-container {
-                flex-direction: column;
-                gap: 30px;
-            }
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-            }
-
-            .main-header {
-                position: static; /* Make header static on mobile */
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .nav-links a {
-                margin: 5px 0;
-                padding: 10px;
-                background-color: var(--light-gray);
-                border-radius: 5px;
-                text-align: center;
-            }
-
-            #lang-toggle-btn {
-                width: 100%;
-            }
-
-            .hero-section {
-                padding: 80px 0 40px 0;
-            }
-
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1rem;
-            }
-
-            .section {
-                padding: 60px 0;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .accordion-header {
-                font-size: 1.1rem;
-                padding: 15px;
-            }
-
-            .accordion-content p {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-
-            .contact-info {
-                flex-direction: column;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="liquid-glass.css">
 </head>
 <body>
 
-    <header class="main-header" id="mainHeader">
+    <header class="main-header liquid-glass-navbar liquid-glass-interactive liquid-glass-optimized" id="mainHeader">
         <div class="container">
             <div class="logo">CURA TECH</div>
             <nav class="nav-links">
@@ -524,7 +63,7 @@
 
         <section class="stats-section">
             <div class="container">
-                <div class="stats-container">
+                <div class="stats-container liquid-glass liquid-glass-interactive liquid-glass-optimized">
                     <div class="stat-item">
                         <span class="counter" data-target="15">0</span>+
                         <p>
@@ -560,7 +99,7 @@
                 </div>
                 <div class="accordion">
                     <!-- Service 1 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#128172;</span>
                             <span class="lang-en">Chatbot Creation</span>
@@ -583,7 +122,7 @@
                         </div>
                     </div>
                     <!-- Service 2 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#128202;</span>
                             <span class="lang-en">Employee Performance Appraisal</span>
@@ -606,7 +145,7 @@
                         </div>
                     </div>
                     <!-- Service 3 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#128188;</span>
                             <span class="lang-en">Organizational Development</span>
@@ -629,7 +168,7 @@
                         </div>
                     </div>
                     <!-- Service 4 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#128221;</span>
                             <span class="lang-en">Inventory Audit & Compliance</span>
@@ -652,7 +191,7 @@
                         </div>
                     </div>
                     <!-- Service 5 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#9881;</span>
                             <span class="lang-en">Automation & Integrations</span>
@@ -675,7 +214,7 @@
                         </div>
                     </div>
                     <!-- Service 6 -->
-                    <div class="accordion-item">
+                    <div class="accordion-item liquid-glass liquid-glass-interactive liquid-glass-optimized">
                         <div class="accordion-header">
                             <span class="icon">&#127891;</span>
                             <span class="lang-en">Specialized Courses</span>
@@ -759,126 +298,7 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- BILINGUAL LOGIC ---
-            const langToggleButton = document.getElementById('lang-toggle-btn');
-            const htmlEl = document.documentElement;
-            const langLinks = document.querySelectorAll('[data-lang-link]');
-            // ** CHANGED: Default language is now Arabic **
-            const defaultLang = 'ar'; 
-
-            function setLanguage(lang) {
-                htmlEl.setAttribute('lang', lang);
-                htmlEl.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-
-                // Update all links with language-specific hrefs
-                langLinks.forEach(link => {
-                    const newHref = link.getAttribute(`data-${lang}-href`);
-                    if (newHref) {
-                        link.setAttribute('href', newHref);
-                    }
-                });
-                
-                // Save preference
-                localStorage.setItem('userLanguage', lang);
-            }
-
-            langToggleButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                const currentLang = htmlEl.getAttribute('lang');
-                const newLang = currentLang === 'en' ? 'ar' : 'en';
-                setLanguage(newLang);
-            });
-
-            // On page load, check for saved preference, otherwise use the default
-            const savedLang = localStorage.getItem('userLanguage');
-            setLanguage(savedLang || defaultLang);
-
-
-            // --- ORIGINAL PAGE LOGIC ---
-
-            // Animated Counters
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; 
-
-            const animateCounter = (counter) => {
-                const target = +counter.getAttribute('data-target');
-                const updateCount = () => {
-                    const count = +counter.innerText.replace('+', '');
-                    const inc = target / speed;
-
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + inc) + (counter.nextSibling && counter.nextSibling.nodeValue.includes('+') ? '+' : '');
-                        setTimeout(updateCount, 15);
-                    } else {
-                        counter.innerText = target + (counter.nextSibling && counter.nextSibling.nodeValue.includes('+') ? '+' : '');
-                    }
-                };
-                updateCount();
-            };
-
-            const counterObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateCounter(entry.target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            counters.forEach(counter => {
-                counterObserver.observe(counter);
-            });
-
-            // Scroll animations for sections
-            const sections = document.querySelectorAll('.section');
-            const sectionObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            sections.forEach(section => {
-                sectionObserver.observe(section);
-            });
-            
-            // Header scroll effect
-            let lastScrollTop = 0;
-            const header = document.getElementById('mainHeader');
-            window.addEventListener('scroll', function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
-                    header.style.top = `-${header.offsetHeight}px`;
-                } else {
-                    header.style.top = "0";
-                }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            });
-
-            // Accordion Logic
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
-            accordionHeaders.forEach(header => {
-                header.addEventListener('click', function() {
-                    const currentlyActiveHeader = document.querySelector('.accordion-header.active');
-                    if (currentlyActiveHeader && currentlyActiveHeader !== this) {
-                        currentlyActiveHeader.classList.remove('active');
-                        currentlyActiveHeader.nextElementSibling.style.maxHeight = 0;
-                    }
-                    
-                    this.classList.toggle('active');
-                    const content = this.nextElementSibling;
-                    if (this.classList.contains('active')) {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    } else {
-                        content.style.maxHeight = 0;
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
+    <script src="liquid-glass.js"></script>
 </body>
 </html>
